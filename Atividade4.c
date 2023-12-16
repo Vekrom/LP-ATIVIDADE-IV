@@ -2,20 +2,14 @@
 #include <locale.h>
 #include <stdlib.h>
 
-
 struct conta
 {
-    char nomeTitular[333];
-    char tipoConta[333];
-    int numeroConta;
     float saldo;
 };
 
-
-
 void depositar(struct conta *conta, float valor)
 {
-      
+
     conta->saldo += valor;
     printf("\n\tDepósito de R$ %.2f realizado com sucesso.\n", valor);
 }
@@ -40,25 +34,44 @@ void imprimirSaldo(struct conta *conta)
     printf("\n\tSaldo atual: R$ %.2f\n", conta->saldo);
 }
 
-int main(){
-setlocale(LC_ALL, "");
-    struct conta minhaConta = {123456, 200.0, "Vekrom", "corrente"};
+int main()
+{
+    setlocale(LC_ALL, "");
     int opcao;
     float valor;
+
+    struct conta minhaconta;
+    char titular[333];
+    int numeroconta[333];
+    char titularcerto[333] = "Vekrom";
+    int numerocontacorreto = 123;
   
 
+    //do
+    //{
+        printf("digite o nome do Titular da conta:\n");
+        scanf("%s", &titular);
+        printf("digite numero da conta:\n");
+        scanf("%d", &numeroconta);
+        if (titular == titularcerto && numeroconta == numerocontacorreto)
+        {
+            printf("login ou senha inválidos");
+        }
+        else
+        {
+            printf("bem vindo! %s \n");
+        }
 
+   // } while (titular != titularcerto || numeroconta != numerocontacorreto);
 
     do
     {
-
-      
 
         printf("\t\nSelecione uma opção: \n");
         printf("\t\n1. Depositar\n");
         printf("\t\n2. Sacar\n");
         printf("\t\n3. Consultar saldo\n");
-        printf("\t\n4. Sair do aplicativo\n");
+        printf("\t\n4. Sair da\n");
         scanf("%d", &opcao);
 
         switch (opcao)
@@ -66,15 +79,15 @@ setlocale(LC_ALL, "");
         case 1:
             printf("\n\tValor para depósito: \n");
             scanf("%f", &valor);
-            depositar(&minhaConta, valor);
+            depositar(&minhaconta, valor);
             break;
         case 2:
             printf("\t\nInforme o valor para saque: \n");
             scanf("%f", &valor);
-            sacar(&minhaConta, valor);
+            sacar(&minhaconta, valor);
             break;
         case 3:
-            imprimirSaldo(&minhaConta);
+            imprimirSaldo(&minhaconta);
             break;
         case 4:
             printf("\t\nSaindo do programa...\n");
@@ -88,7 +101,9 @@ setlocale(LC_ALL, "");
     return 0;
 }
 
-
 void depositar(struct conta *conta, float valor);
 void sacar(struct conta *conta, float valor);
 void imprimirSaldo(struct conta *conta);
+
+//até tarde, mas n consegui. Valeu o aprendizado
+
