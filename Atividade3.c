@@ -1,65 +1,90 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include <ctype.h>
 
-struct meusprodutos {
-char nome[333];
-float preco;    
-int quantidade;
+
+struct Produto {
+    char nome[333];
+    float preco;
+    int quantidade_estoque;
 };
 
-float calcularTotal (struct meusprodutos *produto){
-      return produto->preco * produto->quantidade;
+
+float calcular_valor_total(struct Produto produto) {
+    return produto.preco * produto.quantidade_estoque;
 }
 
 
-void realizarCompra(struct meusprodutos *produto) {
-    int quantidade_vendas;
-    printf("Quantidade de produtos: ");
-    scanf("%d", &quantidade_vendas);
+void realizar_compra(struct Produto *produto) {
+    int quantidade_compra;
 
-    if (quantidade_vendas > 0 && quantidade_vendas <= produto->quantidade) {
-        produto->quantidade -= quantidade_vendas;
-        printf("Compra realizada\n");
+    printf("Digite a quantidade a ser comprada: ");
+    scanf("%d", &quantidade_compra);
+
+    if (quantidade_compra > 0 && quantidade_compra <= produto->quantidade_estoque) {
+        produto->quantidade_estoque -= quantidade_compra;
+        printf("Compra realizada com sucesso. Novo estoque: %d\n", produto->quantidade_estoque);
     } else {
-        printf("Quantidade inválida\nVerifique o estoque.\n");
+        printf("Quantidade inválida. Compra não realizada.\n");
     }
 }
 
 
+void consultar_estoque(struct Produto produto) {
+    printf("Nome do produto: %s\n", produto.nome);
+    printf("Quantidade do produto: %d\n", produto.quantidade_estoque);
+    printf("Preço por unidade: R$ %.2f\n", produto.preco);
+    printf("Valor total em estoque: R$ %.2f\n", calcular_valor_total(produto));
+}
+
+
+void adicionar_produto(struct Produto *produto) {
+    printf("Digite o nome do produto: ");
+    scanf("%s", produto->nome);
+    printf("Digite a quantidade em estoque: ");
+    scanf("%d", &produto->quantidade_estoque);
+    printf("Digite o preço por unidade: ");
+    scanf("%f", &produto->preco);
+}
 
 int main() {
-   
-    struct meusprodutos meuproduto = {"Produto A", 10.0, 50};
-    int opcao;
-    
-    do {
-        
-        printf("\nMenu:\n");
-        printf("Escolha uma opção: ");
-        printf("1. Realizar uma compra\n");
-        printf("2. Consultar estoque\n");
-        printf("3. Sair do programa\n");
-        scanf("%d", &opcao);
+      setlocale(LC_ALL, "");
+    struct Produto meuProduto;
 
-        // Realizar ações com base na opção escolhida
-        switch (opcao) {
+    int escolha;
+
+    do {
+        printf("\t\n===== Menu =====\n");
+        printf("1. Adicionar produto\n");
+        printf("2. Realizar uma compra\n");
+        printf("3. Consultar estoque\n");
+        printf("4. Sair do programa\n");
+
+        printf("Escolha uma opção: \n");
+        scanf("%d", &escolha);
+        fflush(stdin);
+        switch (escolha) {
             case 1:
-                realizarCompra(&meuproduto);
+                adicionar_produto(&meuProduto);
                 break;
+
             case 2:
-                printf("Estoque disponível: %d unidades\n", meuproduto.quantidade);
-                printf("Valor total em estoque: R$ %.2f\n", calcularTotal(&meuproduto));
+                realizar_compra(&meuProduto);
                 break;
+
             case 3:
-                printf("Saindo do programa.\n");
+                consultar_estoque(meuProduto);
                 break;
+
+            case 4:
+                printf("Fechando o programa\n");
+                break;
+
             default:
                 printf("Opção inválida. Tente novamente.\n");
         }
-    } while (opcao != 3);
+
+    } while (escolha != 4);
 
     return 0;
 }
